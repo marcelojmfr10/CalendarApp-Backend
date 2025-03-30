@@ -1,4 +1,4 @@
-
+const path = require('path');
 const express = require('express');
 const { dbConnection } = require('./database/config');
 const cors = require('cors');
@@ -23,7 +23,11 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
 
-
+// esto es porque express intenta entrar a la url en el navegador
+// cualquier ruta que no esté definida antes, se sirve el contenido estático
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+})
 
 // escuchar peticiones
 app.listen(process.env.PORT, () => {
